@@ -29,7 +29,13 @@ final class YPMenuItem: UIView {
     }
     
     func setup() {
-        backgroundColor = YPImagePickerConfiguration.shared.colors.bottomMenuItemBackgroundColor
+        if #available(iOS 13.0, *) {
+            backgroundColor = .systemGroupedBackground
+        } else {
+            // Fallback on earlier versions
+            backgroundColor = .clear
+
+        }
         
         sv(
             textLabel,
@@ -50,7 +56,7 @@ final class YPMenuItem: UIView {
     }
 
     func select() {
-        textLabel.textColor = YPImagePickerConfiguration.shared.colors.bottomMenuItemSelectedTextColor
+        textLabel.textColor = .systemYellow
     }
     
     func deselect() {

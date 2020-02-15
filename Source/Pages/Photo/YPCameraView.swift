@@ -32,6 +32,7 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
                 timeElapsedLabel,
                 flashButton,
                 flipButton,
+                shotButton,
                 buttonsContainer.sv(
                     shotButton
                 )
@@ -44,6 +45,7 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
                 timeElapsedLabel,
                 flashButton,
                 flipButton,
+                shotButton,
                 buttonsContainer.sv(
                     shotButton
                 )
@@ -62,8 +64,11 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
             |buttonsContainer|,
             0
         )
-        previewViewContainer.heightEqualsWidth()
-
+        if #available(iOS 11.0, *) {
+            previewViewContainer.height((UIScreen.main.bounds.height) - 50 - safeAreaInsets.bottom)
+        } else {
+            // Fallback on earlier versions
+        }
         overlayView?.followEdges(previewViewContainer)
 
         |-(15+sideMargin)-flashButton.size(42)
@@ -75,11 +80,16 @@ class YPCameraView: UIView, UIGestureRecognizerDelegate {
         timeElapsedLabel-(15+sideMargin)-|
         timeElapsedLabel.Top == previewViewContainer.Top + 15
         
-        shotButton.centerVertically()
         shotButton.size(84).centerHorizontally()
+        shotButton.Bottom == previewViewContainer.Bottom - 15
+
 
         // Style
-        backgroundColor = YPConfig.colors.photoVideoScreenBackgroundColor
+        if #available(iOS 13.0, *) {
+            backgroundColor = .systemBackground
+        } else {
+            backgroundColor = .white
+        }
         previewViewContainer.backgroundColor = .black
         timeElapsedLabel.style { l in
             l.textColor = .white

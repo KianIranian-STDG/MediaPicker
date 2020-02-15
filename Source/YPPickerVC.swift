@@ -46,8 +46,14 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = YPConfig.colors.safeAreaBackgroundColor
-        
+//        view.backgroundColor = YPConfig.colors.safeAreaBackgroundColor
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = .white
+
+        }
         delegate = self
         
         // Force Library only when using `minNumberOfItems`.
@@ -167,9 +173,14 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         if let vc = vc as? YPLibraryVC {
             vc.checkPermission()
         } else if let cameraVC = vc as? YPCameraVC {
-            cameraVC.start()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                cameraVC.start()
+            }
         } else if let videoVC = vc as? YPVideoCaptureVC {
-            videoVC.start()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                videoVC.start()
+            }
+
         }
     
         updateUI()
@@ -179,10 +190,13 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         switch mode {
         case .library:
             libraryVC?.pausePlayer()
+            break
         case .camera:
             cameraVC?.stopCamera()
+            break
         case .video:
             videoVC?.stopCamera()
+            break
         }
     }
     
