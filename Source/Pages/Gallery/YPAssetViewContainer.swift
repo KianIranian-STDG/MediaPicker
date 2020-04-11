@@ -21,7 +21,7 @@ class YPAssetViewContainer: UIView {
     public let multipleSelectionButton = UIButton()
     public var onlySquare = YPConfig.library.onlySquare
     public var isShown = true
-    
+    var isFirstLaunch : Bool = true
     private let spinner = UIActivityIndicatorView(style: .white)
     private var shouldCropToSquare = YPConfig.library.isSquareByDefault
     private var isMultipleSelection = false
@@ -91,8 +91,12 @@ class YPAssetViewContainer: UIView {
         if let zoomableView = zoomableView {
             let z = zoomableView.zoomScale
             shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
+            if isFirstLaunch == true {
+                shouldCropToSquare = false
+            }
         }
         zoomableView?.fitImage(shouldCropToSquare, animated: true)
+        isFirstLaunch = !isFirstLaunch
     }
     
     
