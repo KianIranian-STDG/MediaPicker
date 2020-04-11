@@ -91,12 +91,12 @@ class YPAssetViewContainer: UIView {
         if let zoomableView = zoomableView {
             let z = zoomableView.zoomScale
             shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
-//            if isFirstLaunch == true {
-//                shouldCropToSquare = false
-//            }
+            if isFirstLaunch == true {
+                shouldCropToSquare = false
+            }
         }
         zoomableView?.fitImage(shouldCropToSquare, animated: true)
-//        isFirstLaunch = true
+        isFirstLaunch = !isFirstLaunch
     }
     
     
